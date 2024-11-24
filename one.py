@@ -6,6 +6,7 @@ class funcMongoDB:
     def __init__(self):
         self.config_file = os.path.join(os.path.dirname(__file__),"config.json")
         self.config = None
+        self.client = None
         self.readConfig()
     
     def readConfig(self):
@@ -14,9 +15,8 @@ class funcMongoDB:
         print(self.config)
 
     def connect_mongodb(self):
-    client = pymongo.MongoClient(
+        self.client = pymongo.MongoClient(
         host = os.getenv(self.config['mongodb']['host']),
         username=os.getenv(self.config['mongodb']['user']),
-        password=os.getenv(self.config['mongodb']['password']),
-    )
-    return client
+        password=os.getenv(self.config['mongodb']['password'])
+        )
