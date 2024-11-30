@@ -1,0 +1,11 @@
+# templates/login.html
+{% extends "base.html" %}
+{% block content %}
+    <h1>Login</h1>
+    <form method="POST">
+        <label>Username: <input type="text" name="username" required></label><br>
+        <label>Password: <input type="password" name="password" required></label><br>
+        <input type="submit" value="Login">
+    </form>
+    
+{% endblock %}

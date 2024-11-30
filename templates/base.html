@@ -1,0 +1,52 @@
+# templates/base.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management App</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .actions { display: flex; gap: 10px; }
+        .flash { 
+            padding: 10px; 
+            margin-bottom: 15px; 
+            border-radius: 5px; 
+        }
+        .flash.success { background-color: #dff0d8; color: #3c763d; }
+        .flash.error { background-color: #f2dede; color: #a94442; }
+        .nav { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 20px; 
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if session.get('user_id') %}
+    <div class="nav">
+        <div>Welcome, {{ session.get('username', 'User') }}</div>
+        <div>
+            <a href="{{ url_for('index') }}">Home</a> | 
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

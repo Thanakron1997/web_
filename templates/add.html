@@ -1,0 +1,12 @@
+# templates/add.html
+{% extends "base.html" %}
+{% block content %}
+    <h1>Add New User</h1>
+    <form method="POST">
+        <label>Name: <input type="text" name="name" required></label><br>
+        <label>Email: <input type="email" name="email" required></label><br>
+        <label>Age: <input type="number" name="age" required></label><br>
+        <input type="submit" value="Add User">
+    </form>
+    <a href="{{ url_for('index') }}">Back to List</a>
+{% endblock %}
