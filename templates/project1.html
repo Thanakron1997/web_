@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>User Management</h1>
+    <a href="{{ url_for('add_user') }}">Add New User</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>SubjectNumber</th>
+                <th>Name</th>
+                <th>HN</th>
+                <th>LastVisit</th>
+                <th>LastVisitDate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.project }}</td>
+                <td>{{ user.subjectNumber }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.hn }}</td>
+                <td>{{ user.lastVisit }}</td>
+                <td>{{ user.lastVisitDate }}</td>
+                <td class="actions">
+                    <a href="{{ url_for('edit_user', user_id=user._id, last_page='project1') }}">Edit</a>
+                    <a href="{{ url_for('delete_user', user_id=user._id,last_page='project1') }}" onclick="return confirm('Are you sure?');">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

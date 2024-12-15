@@ -1,12 +1,24 @@
-# templates/add.html
 {% extends "base.html" %}
 {% block content %}
+<script src="{{url_for('static', filename='js/edit.js')}}"></script>
     <h1>Add New User</h1>
     <form method="POST">
         <label>Name: <input type="text" name="name" required></label><br>
         <label>Email: <input type="email" name="email" required></label><br>
         <label>Age: <input type="number" name="age" required></label><br>
-        <input type="submit" value="Add User">
+        <label for="status">Status: </label>
+        <select name="status">
+            <option value="C">C</option>
+            <option value="WD">WD</option>
+            <option value="SF">SF</option>
+            <option value="Finish">Finish</option>
+            <option value="LostFU">Lost F/U</option>
+            <option value="Transfer">Transfer</option>
+        </select><br>
+        <div id="inputFields"></div>
+        <input type="submit" value="Update User">
+        <button type="button" onclick="addNewfield()">Add More</button><br><br>
+        
     </form>
     <a href="{{ url_for('index') }}">Back to List</a>
 {% endblock %}
