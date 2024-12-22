@@ -4,9 +4,13 @@
 
     <h1>Edit User</h1>
     <form method="POST">
-        <label>Name: <input type="text" name="name" value="{{ user.name }}" required></label><br>
-        <label>Email: <input type="email" name="email" value="{{ user.email }}" required></label><br>
-        <label>Age: <input type="number" name="age" value="{{ user.age }}" required></label><br>
+        <label>Project: <input type="text" name="project" value="{{ user.project }}" readonly></label><br>
+        <label>SubjectNumber: <input type="text" name="subjectNumber" value="{{ user.subjectNumber }}" readonly></label><br>
+        <label>RandomizeNumber: <input type="text" name="randomizeNumber" value="{{ user.randomizeNumber }}" readonly></label><br>
+        <label>Group Visit: <input type="text" name="group" value="{{ user.group }}" readonly></label><br>
+        <label>Group Study: <input type="text" name="groupStudy" value="{{ user.groupStudy }}" readonly></label><br>
+        <label>Provider(RA): <input type="text" name="ra" value="{{ user.ra }}" required></label><br>
+        <label>Provider(RN): <input type="text" name="rn" value="{{ user.rn }}" required></label><br>
         <label for="status">Status: </label>
         <select name="status">
             <option value="C" {% if user.status == 'C' %}selected{% endif %}>C</option>
@@ -16,17 +20,34 @@
             <option value="LostFU" {% if user.status == 'LostFU' %}selected{% endif %}>Lost F/U</option>
             <option value="Transfer" {% if user.status == 'Transfer' %}selected{% endif %}>Transfer</option>
         </select><br>
-        {% if 'visit_data' in user %}
+        <label>Name: <input type="text" name="name" value="{{ user.name }}" required></label><br>
+        <label>HN: <input type="number" name="hn" value="{{ user.hn }}" required></label><br>
+        <label>Date of Birth: <input type="date" name="dob" value="{{ user.dob }}" required></label><br>
+        <label>Phone: <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{7}" placeholder="080-0000000" value="{{ user.phone }}" required></label><br>
+        <label>Address: <input type="text" name="address" value="{{ user.address }}" required></label><br>
+        <label>Parent: <input type="text" name="parent" value="{{ user.parent }}" required></label><br>
+        {% if user['visit_data']|length > 0 %}
+        <label>Coming up Visit: <input type="text" value="{{ user.nextVisit }}" readonly></label>
+        <label>Coming up Visit Date: <input type="text" value="{{ user.nextVisitDate.strftime('%d-%b-%Y') if user.nextVisitDate != 'NA' else user.nextVisitDate }}" readonly></label><br>
         {%for visit in user['visit_data']%}
         <label>Visit: <input type="text" name="visit" value="{{ visit.visit }}" required></label>
         <label>Visit Date: <input type="date" name="visitdate" value="{{ visit.visit_date.strftime('%Y-%m-%d') }}" required></label>
-        <label>Next Visit: <input type="date" name="nextvisit" value="{{ visit.next_visit.strftime('%Y-%m-%d') }}" required></label><br> 
+        <label>Next Visit: <input type="text" name="nextvisit" value="{{ visit.next_visit }}" required></label>
+        <label>Next Visit Date: <input type="date" name="nextvisitDate" value="{{ visit.next_visit_date.strftime('%Y-%m-%d') }}"></label><br> 
         {%endfor%} 
         {% endif %}
         <div id="inputFields"></div>
-        <input type="submit" value="Update User">
-        <button type="button" onclick="addNewfield()">Add More</button><br><br>
-        
+        {% if 'PhoneCallData' in user %}
+        {%for tc in user['PhoneCallData']%}
+        <label>Phone Call: <input type="text" name="PhoneCall" value="{{ tc.PhoneCall }}" required></label>
+        <label>Phone Call Date: <input type="date" name="PhoneCallDate"  value="{{ tc.phoneCallDate.strftime('%Y-%m-%d') }}" required></label>
+        {%endfor%} 
+        {% endif %}
+        <div id="inputPhoneCall"></div>
+        <input type="submit" value="Update Subject">
+        <button type="button" onclick="addNewfield()">Add Visit</button>
+        <button type="button" onclick="addNewPhoneCall()">Add Phone Call</button><br><br>
+
     </form>
     
     <a href="{{ url_for(last_page) }}">Back to List</a>

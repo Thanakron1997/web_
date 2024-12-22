@@ -6,10 +6,33 @@ from functools import wraps
 from connectDB import funcMongoDB
 from datetime import datetime, time
 app = Flask(__name__)
+import func.function as fc
+
 # Generate a secure random secret key
 app.secret_key = os.urandom(24)
 
 
+def updateNextVist(users):
+    users = [{
+            **i,
+            'nextVisit': (nextVisit['next_visit'] if (nextVisit := fc.getNextVist(i['visit_data'])) else "NA")
+            if 'visit_data' in i else "NA",
+            'nextVisitDate': (nextVisit['next_visit_date'] if nextVisit else "NA")
+            if 'visit_data' in i else "NA",
+        }
+        for i in users]
+    return users
+
+def updateNextVistUser(user):
+    if len(user['visit_data']) > 0:
+        nextVisit = fc.getNextVist(user['visit_data'])
+        user['nextVisit'] =  nextVisit['next_visit']
+        user['nextVisitDate'] =  nextVisit['next_visit_date']
+    else:
+        user['nextVisit'] =  "NA"
+        user['nextVisitDate'] =  "NA"
+
+    return user
 
 def hash_password(password):
     salt = os.urandom(32)
@@ -52,17 +75,18 @@ def add_cache_control_header(response):
 
 # Routes
 @app.route('/')
-# @login_required
+@login_required
 def index():
     return render_template('index.html')
 
 @app.route('/project1')
-# @login_required
+@login_required
 def project1():
     db = funcMongoDB(index_='name')
     db.connect_mongodb()
     users = db.get_data()
     db.stopClient()
+    users = updateNextVist(users)
     return render_template('project1.html', users=users)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -89,56 +113,98 @@ def logout():
     flash('You have been logged out', 'success')
     return redirect(url_for('login'))
 
-@app.route('/add', methods=['GET', 'POST'])
+@app.route('/<last_page>/add', methods=['GET', 'POST'])
 @login_required
-def add_user():
+def add_user(last_page):
     if request.method == 'POST':
+        project = request.form['project']
+        subjectNumber = request.form['subjectNumber']
+        randomizeNumber = request.form['randomizeNumber']
+        group = request.form['group']
+        groupStudy = request.form['groupStudy']
+        ra = request.form['ra']
+        rn = request.form['rn']
+        status = request.form['status']
         name = request.form['name']
-        email = request.form['email']
-        age = request.form['age']
+        hn = request.form['hn']
+        dob = request.form['dob']
+        phone = request.form['phone']
+        address = request.form['address']
+        parent = request.form['parent']
+        visits = request.form.getlist('visit')
+        visit_dates = request.form.getlist('visitdate')
+        next_visits = request.form.getlist('nextvisit')
+        next_visit_dates = request.form.getlist('nextvisitDate')
+        visit_data= []
+        for visit, visit_date, next_visit,next_visit_date in zip(visits, visit_dates, next_visits,next_visit_dates):
+            visit_data.append({
+                'visit': visit,
+        'visit_date': datetime.combine(datetime.strptime(visit_date, '%Y-%m-%d').date(), time.min),  # Convert to datetime
+        'next_visit': next_visit,
+        'next_visit_date': datetime.combine(datetime.strptime(next_visit_date, '%Y-%m-%d').date(), time.min)  # Convert to datetime
+            })
         db = funcMongoDB()
         db.connect_mongodb()
-        data = {'name':name,'email':email,'age':age}
+        data = {'project':project,'subjectNumber':subjectNumber,'randomizeNumber':randomizeNumber,'group':group,'groupStudy':groupStudy,'ra':ra,'rn':rn,'status':status,'name':name,'hn':hn,'dob':dob,'phone':phone,'address':address,'parent':parent,'visit_data':visit_data}
         result = db.addNewData(data)
         message = 'User profile added successfully! id: ' + str(result)
         flash(message, 'success')
-        return redirect(url_for('index'))
-    return render_template('add.html')
+        db.stopClient()
+        return redirect(url_for(last_page))
+    return render_template('add.html',last_page=last_page)
 
 @app.route('/edit/<last_page>/<user_id>', methods=['GET', 'POST'])
-# @login_required
+@login_required
 def edit_user(user_id,last_page):
-    print(last_page)
     db = funcMongoDB()
     db.connect_mongodb()
     user = db.findOne(user_id)
+    user = updateNextVistUser(user)
     if not user:
         db.stopClient()
         flash('User not found', 'error')
         return redirect(url_for(last_page))
     
     if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        age = request.form['age']
+        project = request.form['project']
+        subjectNumber = request.form['subjectNumber']
+        randomizeNumber = request.form['randomizeNumber']
+        group = request.form['group']
+        groupStudy = request.form['groupStudy']
+        ra = request.form['ra']
+        rn = request.form['rn']
         status = request.form['status']
+        name = request.form['name']
+        hn = request.form['hn']
+        dob = request.form['dob']
+        phone = request.form['phone']
+        address = request.form['address']
+        parent = request.form['parent']
         visits = request.form.getlist('visit')
         visit_dates = request.form.getlist('visitdate')
         next_visits = request.form.getlist('nextvisit')
+        next_visit_dates = request.form.getlist('nextvisitDate')
+        phoneCalls = request.form.getlist('PhoneCall')
+        phoneCallDates = request.form.getlist('PhoneCallDate')
         visit_data= []
-        for visit, visit_date, next_visit in zip(visits, visit_dates, next_visits):
+        for visit, visit_date, next_visit,next_visit_date in zip(visits, visit_dates, next_visits,next_visit_dates):
             visit_data.append({
                 'visit': visit,
         'visit_date': datetime.combine(datetime.strptime(visit_date, '%Y-%m-%d').date(), time.min),  # Convert to datetime
-        'next_visit': datetime.combine(datetime.strptime(next_visit, '%Y-%m-%d').date(), time.min)  # Convert to datetime
-
+        'next_visit': next_visit,
+        'next_visit_date': datetime.combine(datetime.strptime(next_visit_date, '%Y-%m-%d').date(), time.min)  # Convert to datetime
             })
-        print(visit_data)
-        data = {'_id':user_id,'name':name,'email':email,'age':age,'status':status,'visit_data':visit_data}
+        PhoneCallData = []
+        for PhoneCall, phoneCallDate in zip(phoneCalls, phoneCallDates):
+            PhoneCallData.append({
+            'PhoneCall': PhoneCall,
+            'phoneCallDate': datetime.combine(datetime.strptime(phoneCallDate, '%Y-%m-%d').date(), time.min)
+            })
+        data = {'_id':user_id,'project':project,'subjectNumber':subjectNumber,'randomizeNumber':randomizeNumber,'group':group,'groupStudy':groupStudy,'ra':ra,'rn':rn,'status':status,'name':name,'hn':hn,'dob':dob,'phone':phone,'address':address,'parent':parent,'visit_data':visit_data,'PhoneCallData':PhoneCallData}
         db.update(data)
         flash('User profile updated successfully', 'success')
+        db.stopClient()
         return redirect(url_for(last_page))
-    
     return render_template('edit.html', user=user,last_page=last_page)
 
 @app.route('/delete/<last_page>/<user_id>')

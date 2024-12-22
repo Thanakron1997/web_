@@ -3,9 +3,13 @@
 <script src="{{url_for('static', filename='js/edit.js')}}"></script>
     <h1>Add New User</h1>
     <form method="POST">
-        <label>Name: <input type="text" name="name" required></label><br>
-        <label>Email: <input type="email" name="email" required></label><br>
-        <label>Age: <input type="number" name="age" required></label><br>
+        <label>Project: <input type="text" name="project" value="{{ last_page }}"required></label><br>
+        <label>SubjectNumber: <input type="text" name="subjectNumber" required></label><br>
+        <label>RandomizeNumber: <input type="text" name="randomizeNumber" required></label><br>
+        <label>Group Visit: <input type="text" name="group" required></label><br>
+        <label>Group Study: <input type="text" name="groupStudy" required></label><br>
+        <label>Provider(RA): <input type="text" name="ra" required></label><br>
+        <label>Provider(RN): <input type="text" name="rn" required></label><br>
         <label for="status">Status: </label>
         <select name="status">
             <option value="C">C</option>
@@ -15,10 +19,16 @@
             <option value="LostFU">Lost F/U</option>
             <option value="Transfer">Transfer</option>
         </select><br>
+        <label>Name: <input type="text" name="name" required></label><br>
+        <label>HN: <input type="number" name="hn" required></label><br>
+        <label>Date of Birth: <input type="date" name="dob" required></label><br>
+        <label>Phone: <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{7}" placeholder="080-0000000" required></label><br>
+        <label>Address: <input type="text" name="address" required></label><br>
+        <label>Parent: <input type="text" name="parent" required></label><br>
         <div id="inputFields"></div>
-        <input type="submit" value="Update User">
-        <button type="button" onclick="addNewfield()">Add More</button><br><br>
+        <input type="submit" value="add New Subject">
+        <button type="button" onclick="addNewfield()">Add Visit</button><br><br>
         
     </form>
-    <a href="{{ url_for('index') }}">Back to List</a>
+    <a href="{{ url_for(last_page) }}">Back to List</a>
 {% endblock %}

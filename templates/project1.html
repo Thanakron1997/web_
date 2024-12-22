@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>User Management</h1>
-    <a href="{{ url_for('add_user') }}">Add New User</a>
-    <table>
+{% set last_page = 'project1' %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/tables.css') }}">
+    <h1>Project: {{last_page}}</h1>
+    <a href="{{ url_for('add_user',last_page=last_page) }}" class="add-user-btn">Add New User</a>
+    <table id="userTable" class="display">
         <thead>
             <tr>
                 <th>Project</th>
                 <th>SubjectNumber</th>
                 <th>Name</th>
                 <th>HN</th>
+                <th>Status</th>
                 <th>LastVisit</th>
                 <th>LastVisitDate</th>
                 <th>Actions</th>
@@ -21,14 +25,21 @@
                 <td>{{ user.subjectNumber }}</td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.hn }}</td>
-                <td>{{ user.lastVisit }}</td>
-                <td>{{ user.lastVisitDate }}</td>
+                <td>{{ user.status }}</td>
+                <td>{{ user.nextVisit }}</td>
+                <td>{{ user.nextVisitDate.strftime('%d-%b-%Y') if user.nextVisitDate != 'NA' else user.nextVisitDate }}</td>
                 <td class="actions">
-                    <a href="{{ url_for('edit_user', user_id=user._id, last_page='project1') }}">Edit</a>
-                    <a href="{{ url_for('delete_user', user_id=user._id,last_page='project1') }}" onclick="return confirm('Are you sure?');">Delete</a>
+                    <a href="{{ url_for('edit_user', user_id=user._id, last_page=last_page) }}">Edit</a>
+                    <a href="{{ url_for('delete_user', user_id=user._id,last_page=last_page) }}" onclick="return confirm('Are you sure?');">Delete</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="{{url_for('static', filename='js/tables.js')}}"></script>
+
+
 {% endblock %}
