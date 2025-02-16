@@ -4,8 +4,9 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/tables.css') }}">
     <h1>Project: {{last_page}}</h1>
-    <a href="{{ url_for('add_user',last_page=last_page) }}" class="add-user-btn">Add New User</a>
+    <a href="{{ url_for('add_user',last_page=last_page) }}" class="add-user-btn">Add New Subject</a>
     <table id="userTable" class="display">
+
         <thead>
             <tr>
                 <th>Project</th>

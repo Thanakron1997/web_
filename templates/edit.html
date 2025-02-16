@@ -1,55 +1,172 @@
 {% extends "base.html" %}
 {% block content %}
     <script src="{{url_for('static', filename='js/edit.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <h1>Update Subject Data</h1>
+    
+    {% if user.lastVisit %}
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <strong>Alert!</strong>&nbsp;"Coming up Visit Date" is not correct! because there is no new next-visit data information.
+    </div>
+    {% endif %}
 
-    <h1>Edit User</h1>
+    <div class="form-div">
     <form method="POST">
-        <label>Project: <input type="text" name="project" value="{{ user.project }}" readonly></label><br>
-        <label>SubjectNumber: <input type="text" name="subjectNumber" value="{{ user.subjectNumber }}" readonly></label><br>
-        <label>RandomizeNumber: <input type="text" name="randomizeNumber" value="{{ user.randomizeNumber }}" readonly></label><br>
-        <label>Group Visit: <input type="text" name="group" value="{{ user.group }}" readonly></label><br>
-        <label>Group Study: <input type="text" name="groupStudy" value="{{ user.groupStudy }}" readonly></label><br>
-        <label>Provider(RA): <input type="text" name="ra" value="{{ user.ra }}" required></label><br>
-        <label>Provider(RN): <input type="text" name="rn" value="{{ user.rn }}" required></label><br>
-        <label for="status">Status: </label>
-        <select name="status">
-            <option value="C" {% if user.status == 'C' %}selected{% endif %}>C</option>
-            <option value="WD" {% if user.status == 'WD' %}selected{% endif %}>WD</option>
-            <option value="SF" {% if user.status == 'SF' %}selected{% endif %}>SF</option>
-            <option value="Finish" {% if user.status == 'Finish' %}selected{% endif %}>Finish</option>
-            <option value="LostFU" {% if user.status == 'LostFU' %}selected{% endif %}>Lost F/U</option>
-            <option value="Transfer" {% if user.status == 'Transfer' %}selected{% endif %}>Transfer</option>
-        </select><br>
-        <label>Name: <input type="text" name="name" value="{{ user.name }}" required></label><br>
-        <label>HN: <input type="number" name="hn" value="{{ user.hn }}" required></label><br>
-        <label>Date of Birth: <input type="date" name="dob" value="{{ user.dob }}" required></label><br>
-        <label>Phone: <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{7}" placeholder="080-0000000" value="{{ user.phone }}" required></label><br>
-        <label>Address: <input type="text" name="address" value="{{ user.address }}" required></label><br>
-        <label>Parent: <input type="text" name="parent" value="{{ user.parent }}" required></label><br>
+        <div class="input-block subject-info" style="margin: 1rem;">
+        <h4>Subject Information</h4>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Project:</label>
+                <input type="text" name="project" value="{{ user.project }}" readonly>
+            </div>
+            <div class="col-sm-3">
+                <label>SubjectNumber:</label>
+                <input type="text" name="subjectNumber" value="{{ user.subjectNumber }}" readonly>
+            </div>
+            <div class="col-sm-3">
+                <label>RandomizeNumber:</label>
+                <input type="text" name="randomizeNumber" value="{{ user.randomizeNumber }}" readonly>
+            </div>
+            <div class="col-sm-2">
+                <label>Group Visit:</label>
+                <input type="text" name="group" value="{{ user.group }}" readonly>
+            </div>
+            <div class="col-sm-2">
+                <label>Group Study:</label>
+                <input type="text" name="groupStudy" value="{{ user.groupStudy }}" readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Provider(RA): </label>
+                <input type="text" name="ra" value="{{ user.ra }}" required>
+            </div> 
+            <div class="col-sm-2">
+                <label>Provider(RN):</label>
+                <input type="text" name="rn" value="{{ user.rn }}" required>
+            </div>
+            <div class="col-sm-2"> 
+                <label for="status">Status: </label><br>
+                <select name="status">
+                    <option value="C" {% if user.status == 'C' %}selected{% endif %}>C</option>
+                    <option value="WD" {% if user.status == 'WD' %}selected{% endif %}>WD</option>
+                    <option value="SF" {% if user.status == 'SF' %}selected{% endif %}>SF</option>
+                    <option value="Finish" {% if user.status == 'Finish' %}selected{% endif %}>Finish</option>
+                    <option value="LostFU" {% if user.status == 'LostFU' %}selected{% endif %}>Lost F/U</option>
+                    <option value="Transfer" {% if user.status == 'Transfer' %}selected{% endif %}>Transfer</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Name:</label> 
+                <input type="text" name="name" value="{{ user.name }}" required>
+            </div>
+            <div class="col-sm-2">
+                <label>HN:</label>
+                <input type="number" name="hn" value="{{ user.hn }}" required>
+            </div>
+            <div class="col-sm-2">
+                <label>Date of Birth:</label>
+                <input type="date" name="dob" value="{{ user.dob }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-10">
+                <label>Address:</label>
+                <input type="text" name="address" value="{{ user.address }}" required>
+            </div>
+            <div class="col-sm-2">
+                <label>Phone:</label>
+                <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{7}" placeholder="080-0000000" value="{{ user.phone }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label>Parent:</label>
+                <input type="text" name="parent" value="{{ user.parent }}" required>
+            </div>
+        </div>
+    
         {% if user['visit_data']|length > 0 %}
-        <label>Coming up Visit: <input type="text" value="{{ user.nextVisit }}" readonly></label>
-        <label>Coming up Visit Date: <input type="text" value="{{ user.nextVisitDate.strftime('%d-%b-%Y') if user.nextVisitDate != 'NA' else user.nextVisitDate }}" readonly></label><br>
+        <div class="row">
+            <div class="col-sm-3">
+            <label>Coming up Visit:</label>
+            <input type="text" value="{{ user.nextVisit }}" readonly>
+            </div>
+            <div class="col-sm-3">
+                <label>Coming up Visit Date:</label>
+                <input type="text" value="{{ user.nextVisitDate.strftime('%d-%b-%Y') if user.nextVisitDate != 'NA' else user.nextVisitDate }}" readonly>
+            </div>
+        </div> 
+        {% endif %}
+    </div>
+        {% if user['visit_data']|length > 0 %}
+        <div class="input-block subject-info" style="margin: 1rem;">
+        <h4>Visit Data</h4>
         {%for visit in user['visit_data']%}
-        <label>Visit: <input type="text" name="visit" value="{{ visit.visit }}" required></label>
-        <label>Visit Date: <input type="date" name="visitdate" value="{{ visit.visit_date.strftime('%Y-%m-%d') }}" required></label>
-        <label>Next Visit: <input type="text" name="nextvisit" value="{{ visit.next_visit }}" required></label>
-        <label>Next Visit Date: <input type="date" name="nextvisitDate" value="{{ visit.next_visit_date.strftime('%Y-%m-%d') }}"></label><br> 
+        <div class="row">
+            <div class="col-sm-2">
+            <label>Visit:</label>
+            <input type="text" name="visit" value="{{ visit.visit }}" required>
+            </div>
+            <div class="col-sm-2">
+                <label>Visit Date:</label>
+                <input type="date" name="visitdate" value="{{ visit.visit_date.strftime('%Y-%m-%d') }}" required>
+            </div>
+            <div class="col-sm-2">
+                <label>Next Visit:</label>
+                <input type="text" name="nextvisit" value="{{ visit.next_visit }}" required>
+            </div>
+            <div class="col-sm-2">
+            <label>Next Visit Date:</label>
+            <input type="date" name="nextvisitDate" value="{{ visit.next_visit_date.strftime('%Y-%m-%d') }}">
+            </div>
+        </div>
         {%endfor%} 
         {% endif %}
         <div id="inputFields"></div>
+        <div class="row">
+        <div class="col-sm-2">
+            <button type="button" onclick="addNewfield()">Add Visit</button>
+        </div>
+        </div>
+        </div>
         {% if 'PhoneCallData' in user %}
+        <div class="input-block subject-info" style="margin: 1rem;">
+        <h4>Phone Call</h4>
         {%for tc in user['PhoneCallData']%}
-        <label>Phone Call: <input type="text" name="PhoneCall" value="{{ tc.PhoneCall }}" required></label>
-        <label>Phone Call Date: <input type="date" name="PhoneCallDate"  value="{{ tc.phoneCallDate.strftime('%Y-%m-%d') }}" required></label>
+        <div class="row">
+            <div class="col-sm-2">
+                <label>Phone Call:</label>
+                <input type="text" name="PhoneCall" value="{{ tc.PhoneCall }}" required>
+            </div>
+            <div class="col-sm-2">
+                <label>Phone Call Date:</label>
+                <input type="date" name="PhoneCallDate"  value="{{ tc.phoneCallDate.strftime('%Y-%m-%d') }}" required>
+            </div>
+        </div>
         {%endfor%} 
         {% endif %}
         <div id="inputPhoneCall"></div>
-        <input type="submit" value="Update Subject">
-        <button type="button" onclick="addNewfield()">Add Visit</button>
-        <button type="button" onclick="addNewPhoneCall()">Add Phone Call</button><br><br>
-
+        <div class="row">
+            <div class="col-sm-2">
+                <button type="button" onclick="addNewPhoneCall()">Add Phone Call</button>
+            </div>
+        </div>
+        </div>
+        <div class="row" style="margin: 0.5rem;">
+            <div class="col-sm-2">
+                <input type="submit" value="Update Subject">
+            </div>
+        </div>
+        
     </form>
-    
+    </div>
     <a href="{{ url_for(last_page) }}">Back to List</a>
 
 {% endblock %}

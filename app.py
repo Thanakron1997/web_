@@ -11,6 +11,13 @@ import func.function as fc
 # Generate a secure random secret key
 app.secret_key = os.urandom(24)
 
+# Generate a secure random secret key
+@app.context_processor
+def utility_functions():
+    def print_in_console(message):
+        print(str(message))
+
+    return dict(mdebug=print_in_console)
 
 def updateNextVist(users):
     users = [{
@@ -28,6 +35,8 @@ def updateNextVistUser(user):
         nextVisit = fc.getNextVist(user['visit_data'])
         user['nextVisit'] =  nextVisit['next_visit']
         user['nextVisitDate'] =  nextVisit['next_visit_date']
+        if 'lastVisit' in nextVisit.keys():
+            user['lastVisit'] = True
     else:
         user['nextVisit'] =  "NA"
         user['nextVisitDate'] =  "NA"
@@ -86,7 +95,7 @@ def project1():
     db.connect_mongodb()
     users = db.get_data()
     db.stopClient()
-    users = updateNextVist(users)
+    users = updateNextVist(users) 
     return render_template('project1.html', users=users)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -96,7 +105,6 @@ def login():
         password = request.form['password']
         db = funcMongoDB(index_='user')
         user = db.loginUser(username)
-        print(user)
         if user and verify_password(user['password'], password):
             session['user_id'] = user['id']
             session['username'] = user['user']

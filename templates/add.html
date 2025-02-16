@@ -1,33 +1,104 @@
 {% extends "base.html" %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/add.css') }}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="{{url_for('static', filename='js/edit.js')}}"></script>
-    <h1>Add New User</h1>
+    <h1>Add New Subject</h1>
     <form method="POST">
-        <label>Project: <input type="text" name="project" value="{{ last_page }}"required></label><br>
-        <label>SubjectNumber: <input type="text" name="subjectNumber" required></label><br>
-        <label>RandomizeNumber: <input type="text" name="randomizeNumber" required></label><br>
-        <label>Group Visit: <input type="text" name="group" required></label><br>
-        <label>Group Study: <input type="text" name="groupStudy" required></label><br>
-        <label>Provider(RA): <input type="text" name="ra" required></label><br>
-        <label>Provider(RN): <input type="text" name="rn" required></label><br>
-        <label for="status">Status: </label>
-        <select name="status">
-            <option value="C">C</option>
-            <option value="WD">WD</option>
-            <option value="SF">SF</option>
-            <option value="Finish">Finish</option>
-            <option value="LostFU">Lost F/U</option>
-            <option value="Transfer">Transfer</option>
-        </select><br>
-        <label>Name: <input type="text" name="name" required></label><br>
-        <label>HN: <input type="number" name="hn" required></label><br>
-        <label>Date of Birth: <input type="date" name="dob" required></label><br>
-        <label>Phone: <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{7}" placeholder="080-0000000" required></label><br>
-        <label>Address: <input type="text" name="address" required></label><br>
-        <label>Parent: <input type="text" name="parent" required></label><br>
-        <div id="inputFields"></div>
-        <input type="submit" value="add New Subject">
-        <button type="button" onclick="addNewfield()">Add Visit</button><br><br>
+        <div class="input-block subject-info" style="margin: 1rem;">
+            <h4>Subject Information</h4>
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Project:</label>
+                    <input type="text" name="project" value="{{ last_page }}"required>
+                </div>
+                <div class="col-sm-3">
+                    <label>SubjectNumber:</label>
+                    <input type="text" name="subjectNumber" required>
+                </div>
+                <div class="col-sm-3">
+                    <label>RandomizeNumber:</label>
+                    <input type="text" name="randomizeNumber" required>
+                </div>
+                <div class="col-sm-2">
+                    <label>Group Visit:</label>
+                    <input type="text" name="group" required>
+                </div>
+                <div class="col-sm-2">
+                    <label>Group Study:</label>
+                    <input type="text" name="groupStudy" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Provider(RA):</label>
+                    <input type="text" name="ra" required>
+                </div>
+                <div class="col-sm-2">
+                    <label>Provider(RN):</label>
+                    <input type="text" name="rn" required>
+                </div>
+                <div class="col-sm-2">
+                    <label for="status">Status: </label>
+                    <select name="status">
+                        <option value="C">C</option>
+                        <option value="WD">WD</option>
+                        <option value="SF">SF</option>
+                        <option value="Finish">Finish</option>
+                        <option value="LostFU">Lost F/U</option>
+                        <option value="Transfer">Transfer</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label>Name:</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="col-sm-2">
+                    <label>HN:</label>
+                    <input type="number" name="hn" required>
+                </div>
+                <div class="col-sm-2">
+                    <label>Date of Birth:</label>
+                    <input type="date" name="dob" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10">
+                    <label>Address:</label>
+                    <input type="text" name="address" required>
+                </div>
+                <div class="col-sm-2">
+                    <label>Phone:</label>
+                    <input type="tel" name="phone" pattern="[0-9]{3}-[0-9]{7}" placeholder="080-0000000" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Parent:</label>
+                    <input type="text" name="parent" required>
+                </div>
+            </div>
+        </div>
+        <div class="input-block subject-info" style="margin: 1rem;">
+            <h4>Visit Data</h4>
+            <div id="inputFields"></div>
+            <div class="row">
+                <div class="col-sm-2">
+                <button type="button" onclick="addNewfield()">Add Visit</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin: 0.5rem;">
+            <div class="col-sm-2">
+                <input type="submit" value="add New Subject">
+            </div>
+        </div>
+        
+
         
     </form>
     <a href="{{ url_for(last_page) }}">Back to List</a>
