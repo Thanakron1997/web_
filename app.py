@@ -86,17 +86,58 @@ def add_cache_control_header(response):
 @app.route('/')
 @login_required
 def index():
-    return render_template('index.html')
+    db = funcMongoDB()
+    ongoing_project = ['test']
+    all_project = {}
+    for i in ongoing_project:
+        i_data = {}
+        db.connect_mongodb(collectionName = i)
+        users = db.get_data()
+        contiune_status = [entry for entry in users if entry['status'] == 'C']
+        wd_status = [entry for entry in users if entry['status'] == 'WD']
+        sf_status = [entry for entry in users if entry['status'] == 'SF']
+        finish_status = [entry for entry in users if entry['status'] == 'Finish']
+        lost_status = [entry for entry in users if entry['status'] == 'Lost F/U']
+        trans_status = [entry for entry in users if entry['status'] == 'Transfer']
+        i_data['total'] = len(users)
+        i_data['wd'] = len(wd_status)
+        i_data['continue'] = len(contiune_status)
+        i_data['sf'] = len(sf_status)
+        i_data['finish'] = len(finish_status)
+        i_data['lost'] = len(lost_status)
+        i_data['transfer'] = len(trans_status)
+        all_project[i] = i_data
+    db.stopClient()
+    return render_template('index.html',data=all_project)
 
 @app.route('/project1')
 @login_required
 def project1():
-    db = funcMongoDB(index_='name')
-    db.connect_mongodb()
+    db = funcMongoDB()
+    db.connect_mongodb(collectionName = 'test')
     users = db.get_data()
     db.stopClient()
     users = updateNextVist(users) 
     return render_template('project1.html', users=users)
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if request.method == 'POST':
+        db = funcMongoDB()
+        db.connect_mongodb()
+        query_key = request.form['query_key']
+        query_val = request.form['query_val']
+        query = {query_key:query_val}
+        result = db.searchall(query)
+        db.stopClient()
+        if len(result)>0:
+            result = updateNextVist(result)
+        else:
+            result = "No Data"
+    else:
+        result = None
+    return render_template('search.html', users=result)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

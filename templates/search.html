@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/edit.css')}}">
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/index.css')}}">
+    <div class="input-block" style="margin: 1rem;">
+        <h1>Search</h1>
+        <form method="POST">
+        <div class="row row-no-gutters">
+            <div class="col-sm-1">
+                    <label>Search by: </label>
+            </div>
+            <div class="col-sm-1">
+                    <select name="query_key">
+                        <option value="subjectNumber">Subject</option>
+                        <option value="hn">HN</option>
+                        <option value="name">Name</option>
+                        <option value="phone">Phone</option>
+                    </select>
+            </div>
+            <div class="col-sm-4" style="padding-left: 10px;">
+                <input type="text" name="query_val" required>
+            </div>
+            <div class="col-sm-1" style="padding-left: 2px;">
+                <input type="submit" value="Search">
+            </div>
+        </div>
+        </form>
+
+    {% if users %}
+        {% if users != "No Data" %}
+            <div class="result_data" style="padding-top: 10px;">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <table>
+                            <tr>
+                            <th>Project</th>
+                            <th>SubjectNumber</th>
+                            <th>Group</th>
+                            <th>RA</th>
+                            <th>RN</th>
+                            <th>Name</th>
+                            <th>HN</th>
+                            <th>Status</th>
+                            <th>next_visit</th>
+                            <th>next_visit_date</th>
+                            </tr>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.project }}</td>
+                                <td>{{ user.group }}</td>
+                                <td>{{ user.subjectNumber }}</td>
+                                <td>{{ user.ra }}</td>
+                                <td>{{ user.rn }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.hn }}</td>
+                                <td>{{ user.status }}</td>
+                                <td>{{ user.nextVisit }}</td>
+                                <td>{{ user.nextVisitDate.strftime('%d-%b-%Y') if user.nextVisitDate != 'NA' else user.nextVisitDate }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="nodata">
+                <p>No Data Found!</p>
+            </div>
+        {% endif %}
+    {% else %}
+    {% endif %}
+</div>
+{% endblock %}

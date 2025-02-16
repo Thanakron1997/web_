@@ -1,5 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/index.css')}}">
     <h1>Home Page</h1>
+    <div class="row" style="padding-top: 2rem;">
+        <div class="col-sm-6">
+            <table>
+                <tr>
+                  <th>Project</th>
+                  <th>Total</th>
+                  <th>Continue</th>
+                  <th>Finished</th>
+                  <th>WD</th>
+                  <th>SF</th>
+                  <th>Lost F/U</th>
+                  <th>Transfer</th>
+                </tr>
+                <tr>
+                    <td>Project 1</td>
+                    <td>{{data.test.total}}</td>
+                    <td>{{data.test.continue}}</td>
+                    <td>{{data.test.finish}}</td>
+                    <td>{{data.test.wd}}</td>
+                    <td>{{data.test.sf}}</td>
+                    <td>{{data.test.lost}}</td>
+                    <td>{{data.test.transfer}}</td>
+                </tr>
+              </table>
+        </div>
+    </div>
 
 {% endblock %}

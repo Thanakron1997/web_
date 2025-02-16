@@ -62,7 +62,6 @@ class funcMongoDB:
         return insertedID.inserted_id
     
     def update(self,data):
-        
         if self.index_ == '_id':
             id_ = data[self.index_]
             if '_id' in data:
@@ -80,7 +79,18 @@ class funcMongoDB:
     def stopClient(self,stopConnect=False):
         if stopConnect:
             self.client.close()
-
+    
+    def searchall(self,query):
+        data = []
+        collections = self.db.list_collection_names()
+        for collection_name in collections:
+            collection = self.db[collection_name]
+            results = collection.find(query)
+            results_list = list(results)
+            if results_list:
+                for i in results_list:
+                    data.append(i)
+        return data
 # test = funcMongoDB(index_='name')
 # data = test.get_data()
 # print(data)
