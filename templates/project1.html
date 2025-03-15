@@ -3,6 +3,7 @@
 {% set last_page = 'project1' %}
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/tables.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <h1>Project: {{last_page}}</h1>
     <a href="{{ url_for('add_user',last_page=last_page) }}" class="add-user-btn">Add New Subject</a>
     <table id="userTable" class="display">
@@ -14,8 +15,8 @@
                 <th>Name</th>
                 <th>HN</th>
                 <th>Status</th>
-                <th>LastVisit</th>
-                <th>LastVisitDate</th>
+                <th>Next Visit</th>
+                <th>Next Visit Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -30,8 +31,10 @@
                 <td>{{ user.nextVisit }}</td>
                 <td>{{ user.nextVisitDate.strftime('%d-%b-%Y') if user.nextVisitDate != 'NA' else user.nextVisitDate }}</td>
                 <td class="actions">
-                    <a href="{{ url_for('edit_user', user_id=user._id, last_page=last_page) }}">Edit</a>
-                    <a href="{{ url_for('delete_user', user_id=user._id,last_page=last_page) }}" onclick="return confirm('Are you sure?');">Delete</a>
+                    <a href="{{ url_for('edit_user', user_id=user._id, last_page=last_page) }}"><i class="material-icons btneditTable">edit</i></a>
+                    <!-- <a href="{{ url_for('edit_user', user_id=user._id, last_page=last_page) }}">Edit</a> -->
+                    <a href="{{ url_for('delete_user', user_id=user._id,last_page=last_page) }}" onclick="return confirm('Are you sure?');"><i class="material-icons btnDelTable">delete</i></a>
+                    <!-- <a href="{{ url_for('delete_user', user_id=user._id,last_page=last_page) }}" onclick="return confirm('Are you sure?');">Delete</a> -->
                 </td>
             </tr>
             {% endfor %}

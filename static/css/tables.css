@@ -13,3 +13,15 @@
   }
 table { width: 100%; border-collapse: collapse; }
 th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+
+.btnDelTable{
+  font-size: 10px;
+  color: red;
+  cursor: pointer;
+}
+
+.btneditTable{
+  font-size: 10px;
+  color: rgb(71, 195, 0);
+  cursor: pointer;
+}

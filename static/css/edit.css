@@ -39,3 +39,31 @@
 .row {
     margin: 1.1rem;
 }
+
+.btnDel {
+  display: flex;
+  background: none;
+  align-items: center;
+  border: 1px solid rgb(211, 211, 211);
+  /* letter-spacing: .25px; */
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0 24px 0 16px;
+  /* color: #ff0000; */
+  font-size: 16px;
+  color: red;
+}
+.btnDel:hover {
+  background-color: rgba(255, 0, 0, 0.185);
+}
+
+.iconDel {
+  font-size: 10px;
+  color: red;
+}
+.divbtnDel {
+  display: flex;
+  align-items: center;
+  padding-top: 22px;
+}

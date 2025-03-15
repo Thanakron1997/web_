@@ -2,6 +2,7 @@
 {% block content %}
     <script src="{{url_for('static', filename='js/edit.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <h1>Update Subject Data</h1>
     
     {% if user.lastVisit %}
@@ -106,7 +107,7 @@
         <div class="input-block subject-info" style="margin: 1rem;">
         <h4>Visit Data</h4>
         {%for visit in user['visit_data']%}
-        <div class="row">
+        <div class="row user-entry">
             <div class="col-sm-2">
             <label>Visit:</label>
             <input type="text" name="visit" value="{{ visit.visit }}" required>
@@ -117,11 +118,18 @@
             </div>
             <div class="col-sm-2">
                 <label>Next Visit:</label>
-                <input type="text" name="nextvisit" value="{{ visit.next_visit }}" required>
+                <input type="text" name="nextvisit" value="{{ visit.next_visit }}">
             </div>
             <div class="col-sm-2">
             <label>Next Visit Date:</label>
-            <input type="date" name="nextvisitDate" value="{{ visit.next_visit_date.strftime('%Y-%m-%d') }}">
+            <input type="date" name="nextvisitDate" value="{{ visit.next_visit_date.strftime('%Y-%m-%d') if visit.next_visit_date != 'NA' else visit.next_visit_date }}">
+            </div>
+            <div class="col-sm-2">
+                <label>Notes:</label>
+                <input type="text" name="notes" value="{{ visit.notes }}">
+            </div>
+            <div class="col-sm-2 divbtnDel">
+                <button onclick="removeField(this)" class="btnDel"><i class="material-icons iconDel">delete</i> Delete </button>
             </div>
         </div>
         {%endfor%} 
@@ -137,7 +145,7 @@
         <div class="input-block subject-info" style="margin: 1rem;">
         <h4>Phone Call</h4>
         {%for tc in user['PhoneCallData']%}
-        <div class="row">
+        <div class="row user-entry">
             <div class="col-sm-2">
                 <label>Phone Call:</label>
                 <input type="text" name="PhoneCall" value="{{ tc.PhoneCall }}" required>
@@ -145,6 +153,9 @@
             <div class="col-sm-2">
                 <label>Phone Call Date:</label>
                 <input type="date" name="PhoneCallDate"  value="{{ tc.phoneCallDate.strftime('%Y-%m-%d') }}" required>
+            </div>
+            <div class="col-sm-2 divbtnDel">
+                <button onclick="removeField(this)" class="btnDel"><i class="material-icons iconDel">delete</i> Delete </button>
             </div>
         </div>
         {%endfor%} 

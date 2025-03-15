@@ -30,19 +30,21 @@
         {% if users != "No Data" %}
             <div class="result_data" style="padding-top: 10px;">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <table>
                             <tr>
                             <th>Project</th>
-                            <th>SubjectNumber</th>
+                            <th>Subject Number</th>
                             <th>Group</th>
                             <th>RA</th>
                             <th>RN</th>
                             <th>Name</th>
                             <th>HN</th>
                             <th>Status</th>
-                            <th>next_visit</th>
-                            <th>next_visit_date</th>
+                            <th>Phone</th>
+                            <th>Parent</th>
+                            <th>Next Visit</th>
+                            <th>Next Visit Date</th>
                             </tr>
                             {% for user in users %}
                             <tr>
@@ -54,6 +56,8 @@
                                 <td>{{ user.name }}</td>
                                 <td>{{ user.hn }}</td>
                                 <td>{{ user.status }}</td>
+                                <td>{{ user.phone }}</td>
+                                <td>{{ user.parent }}</td>
                                 <td>{{ user.nextVisit }}</td>
                                 <td>{{ user.nextVisitDate.strftime('%d-%b-%Y') if user.nextVisitDate != 'NA' else user.nextVisitDate }}</td>
                             </tr>

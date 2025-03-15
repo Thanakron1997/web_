@@ -184,13 +184,15 @@ def add_user(last_page):
         visit_dates = request.form.getlist('visitdate')
         next_visits = request.form.getlist('nextvisit')
         next_visit_dates = request.form.getlist('nextvisitDate')
+        notes_visits = request.form.getlist('notes')
         visit_data= []
-        for visit, visit_date, next_visit,next_visit_date in zip(visits, visit_dates, next_visits,next_visit_dates):
+        for visit, visit_date, next_visit,next_visit_date,note_visit in zip(visits, visit_dates, next_visits,next_visit_dates,notes_visits):
             visit_data.append({
                 'visit': visit,
         'visit_date': datetime.combine(datetime.strptime(visit_date, '%Y-%m-%d').date(), time.min),  # Convert to datetime
         'next_visit': next_visit,
-        'next_visit_date': datetime.combine(datetime.strptime(next_visit_date, '%Y-%m-%d').date(), time.min)  # Convert to datetime
+        'next_visit_date': "NA" if next_visit_date == "" else datetime.combine(datetime.strptime(next_visit_date, '%Y-%m-%d').date(), time.min),  # Convert to datetime
+        'notes':note_visit,
             })
         db = funcMongoDB()
         db.connect_mongodb()
@@ -235,13 +237,15 @@ def edit_user(user_id,last_page):
         next_visit_dates = request.form.getlist('nextvisitDate')
         phoneCalls = request.form.getlist('PhoneCall')
         phoneCallDates = request.form.getlist('PhoneCallDate')
+        notes_visits = request.form.getlist('notes')
         visit_data= []
-        for visit, visit_date, next_visit,next_visit_date in zip(visits, visit_dates, next_visits,next_visit_dates):
+        for visit, visit_date, next_visit,next_visit_date,note_visit in zip(visits, visit_dates, next_visits,next_visit_dates,notes_visits):
             visit_data.append({
-                'visit': visit,
+        'visit': visit,
         'visit_date': datetime.combine(datetime.strptime(visit_date, '%Y-%m-%d').date(), time.min),  # Convert to datetime
         'next_visit': next_visit,
-        'next_visit_date': datetime.combine(datetime.strptime(next_visit_date, '%Y-%m-%d').date(), time.min)  # Convert to datetime
+        'next_visit_date': "NA" if next_visit_date == "" else datetime.combine(datetime.strptime(next_visit_date, '%Y-%m-%d').date(), time.min),  # Convert to datetime
+        'notes':note_visit,
             })
         PhoneCallData = []
         for PhoneCall, phoneCallDate in zip(phoneCalls, phoneCallDates):
@@ -267,4 +271,4 @@ def delete_user(user_id,last_page):
     return redirect(url_for(last_page))
 
 if __name__ == '__main__':
-    app.run(debug=True)  # Set to False in production
+    app.run(host='0.0.0.0',port="8088",debug=True)  # Set to False in production
