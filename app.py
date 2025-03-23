@@ -144,16 +144,19 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        db = funcMongoDB(index_='user')
+        db = funcMongoDB()
         user = db.loginUser(username)
+        login_data = {'login_time':datetime.now(),'ip':request.remote_addr,'username':username,'user_agent':request.headers.get('User-Agent')}
         if user and verify_password(user['password'], password):
             session['user_id'] = user['id']
             session['username'] = user['user']
+            login_data['status'] = 'success'
+            db.updateLogLogin(login_data)
             flash('Login successful!', 'success')
             return redirect(url_for('index'))
-        
+        login_data['status'] = 'failed'
+        db.updateLogLogin(login_data)
         flash('Invalid username or password', 'error')
-    
     return render_template('login.html')
 
 @app.route('/logout')

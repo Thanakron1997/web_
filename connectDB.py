@@ -45,6 +45,16 @@ class funcMongoDB:
         client.close()
         return users_
     
+    def updateLogLogin(self,login_data):
+        client = pymongo.MongoClient(
+        host = self.config['mongodb']['host'],
+        username= self.config['mongodb']['login'],
+        password=self.config['mongodb']['loginPass']
+        )
+        db = client['login']
+        collection = db['userLog']
+        collection.insert_one(login_data)
+        
     def get_data(self):
         # data = self.collection.find({},{'_id':0}):
         data = self.collection.find({})
